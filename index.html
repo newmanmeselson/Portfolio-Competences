@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiches Compétences — Junior Sitti</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #F0F4F8;
+    padding: 40px 20px;
+    color: #1a1a2e;
+  }
+
+  h1.page-title {
+    text-align: center;
+    font-size: 14px;
+    color: #888;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  h2.section-title {
+    text-align: center;
+    font-size: 13px;
+    color: #aaa;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+    font-weight: 400;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(520px, 1fr));
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── FICHE ── */
+  .fiche {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    page-break-inside: avoid;
+  }
+
+  .fiche-header {
+    padding: 28px 32px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fiche-header::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .semestre-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  .fiche-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+
+  .fiche-subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 400;
+  }
+
+  .fiche-body {
+    padding: 24px 32px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 8px;
+  }
+
+  .description {
+    font-size: 13.5px;
+    color: #444;
+    line-height: 1.65;
+  }
+
+  /* Tâches réalisées */
+  .tasks {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tasks li {
+    font-size: 13px;
+    color: #333;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .tasks li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    font-size: 11px;
+    top: 1px;
+  }
+
+  /* Tags compétences */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  .tag.tech {
+    background: #EEF3FA;
+    color: #1B3A6B;
+    border: 1px solid #C5D7F0;
+  }
+
+  .tag.soft {
+    background: #F0FBF4;
+    color: #1A6B3A;
+    border: 1px solid #B8E8C8;
+  }
+
+  .tag.tool {
+    background: #FFF4EC;
+    color: #C45000;
+    border: 1px solid #F5C8A0;
+  }
+
+  /* Impact recruteur */
+  .impact-box {
+    background: #F8FAFF;
+    border-left: 3px solid;
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    margin-top: 4px;
+  }
+
+  .impact-box p {
+    font-size: 12.5px;
+    color: #333;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .impact-box p strong {
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  /* Footer fiche */
+  .fiche-footer {
+    padding: 14px 32px;
+    background: #FAFAFA;
+    border-top: 1px solid #F0F0F0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .fiche-footer .author {
+    font-size: 11px;
+    color: #999;
+    font-weight: 500;
+  }
+
+  .fiche-footer .linkedin-hint {
+    font-size: 10px;
+    color: #0077B5;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* ══ COULEURS PAR SEMESTRE ══ */
+  .s1 .fiche-header { background: linear-gradient(135deg, #1B3A6B 0%, #2E6DA4 100%); }
+  .s1 .tasks li::before { color: #2E6DA4; }
+  .s1 .impact-box { border-color: #2E6DA4; }
+
+  .s2 .fiche-header { background: linear-gradient(135deg, #1A6B3A 0%, #2E9E5A 100%); }
+  .s2 .tasks li::before { color: #2E9E5A; }
+  .s2 .impact-box { border-color: #2E9E5A; }
+  .s2 .section-label { color: #1A6B3A; }
+
+  .s3 .fiche-header { background: linear-gradient(135deg, #C45000 0%, #E87020 100%); }
+  .s3 .tasks li::before { color: #E87020; }
+  .s3 .impact-box { border-color: #E87020; }
+
+  .s4 .fiche-header { background: linear-gradient(135deg, #5B2D8E 0%, #8B50C8 100%); }
+  .s4 .tasks li::before { color: #8B50C8; }
+  .s4 .impact-box { border-color: #8B50C8; }
+
+  .s5 .fiche-header { background: linear-gradient(135deg, #8B1A1A 0%, #C43030 100%); }
+  .s5 .tasks li::before { color: #C43030; }
+  .s5 .impact-box { border-color: #C43030; }
+
+  .s6 .fiche-header { background: linear-gradient(135deg, #1A5A6B 0%, #2E8EA4 100%); }
+  .s6 .tasks li::before { color: #2E8EA4; }
+  .s6 .impact-box { border-color: #2E8EA4; }
+
+  .stage .fiche-header { background: linear-gradient(135deg, #1a1a2e 0%, #1B3A6B 50%, #2E6DA4 100%); }
+  .stage .tasks li::before { color: #2E6DA4; }
+  .stage .impact-box { border-color: #2E6DA4; }
+
+  /* Print */
+  @media print {
+    body { background: white; padding: 0; }
+    .fiche { box-shadow: none; border: 1px solid #eee; margin-bottom: 20px; }
+    .grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">Junior Sitti — BUT GEII</h1>
+<h2 class="section-title">Portfolio de compétences · Semestres 1 → 6</h2>
+
+<div class="grid">
+
+  <!-- ══ STAGE ══ -->
+  <div class="fiche stage">
+    <div class="fiche-header">
+      <div class="semestre-badge">Stage · Avr – Juin 2025</div>
+      <div class="fiche-title">Développement Embarqué & IA</div>
+      <div class="fiche-subtitle">Taka-Tech Inov · Stagiaire</div>
+    </div>
+    <div class="fiche-body">
+      <div>
+        <div class="section-label">Contexte</div>
+        <p class="description">Développement d'un dispositif complet de surveillance de la qualité de l'air (CO₂, température, humidité, particules fines) avec transmission des données en temps réel vers un serveur distant via HTTP.</p>
+      </div>
+      <div>
+        <div class="section-label">Ce que j'ai réalisé</div>
+        <ul class="tasks">
+          <li>Programmation embarquée sur ESP32 & Raspberry Pi (C, MicroPython) pour navigation autonome</li>
+          <li>Conception électronique complète : schémas (KiCad, Fritzing), modélisation 3D (Fusion 360)</li>
+          <li>Entraînement d'un modèle de classification supervisée (Oui/Non/Rien) avec OpenCV et dlib</li>
+          <li>Modélisation système via schémas SysML fonctionnels et structurels</li>
+          <li>Pipeline complet : capteurs → traitement embarqué → protocoles (I2C, SPI, UART) → serveur</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Compétences démontrées</div>
+        <div class="tags">
+          <span class="tag tech">IoT industriel</span>
+          <span class="tag tech">Systèmes embarqués</span>
+          <span class="tag tech">Transmission HTTP</span>
+          <span class="tag tool">ESP32</span>
+          <span class="tag tool">KiCad · Fritzing · Fusion 360</span>
+          <span class="tag tool">I2C · UART · Wi-Fi</span>
+          <span class="tag soft">Autonomie</span>
+          <span class="tag soft">Rigueur technique</span>
+        </div>
+      </div>
+      <div class="impact-box">
+        <p>👉 <strong>Ce que ça prouve :</strong> Maîtrise complète d'un système IoT industriel — du capteur au serveur — en autonomie réelle en entreprise.</p>
+      </div>
+    </div>
+    <div class="fiche-footer">
+      <span class="author">Junior Sitti · BUT GEII S5</span>
+      <span class="linkedin-hint">linkedin.com/in/junior-sitti</span>
+    </div>
+  </div>
+
+  <!-- ══ SAÉ 1.01 ══ -->
+  <div class="fiche s1">
+    <div class="fiche-header">
+      <div class="semestre-badge">SAÉ 1.01 · Semestre 1</div>
+      <div class="fiche-title">Enceinte Thermostatique</div>
+      <div class="fiche-subtitle">Régulation thermique automatique</div>
+    </div>
+    <div class="fiche-body">
+      <div>
+        <div class="section-label">Contexte</div>
+        <p class="description">Concevoir un caisson capable de maintenir une température cible de manière automatique, de la conception PCB jusqu'aux tests de régulation.</p>
+      </div>
+      <div>
+        <div class="section-label">Ce que j'ai réalisé</div>
+        <ul class="tasks">
+          <li>Conception du schéma électronique sous KiCad</li>
+          <li>Choix et intégration d'un capteur thermique adapté</li>
+          <li>Réalisation du prototype et tests de régulation</li>
+          <li>Rédaction d'un rapport technique complet</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Compétences démontrées</div>
+        <div class="tags">
+          <span class="tag tech">Conception PCB</span>
+          <span class="tag tech">Régulation thermique</span>
+          <span class="tag tech">Boucles de contrôle</span>
+          <span class="tag tool">KiCad</span>
+          <span class="tag soft">Rigueur</span>
+          <span class="tag soft">Planification</span>
+        </div>
+      </div>
+      <div class="impact-box">
+        <p>👉 <strong>Ce que ça prouve :</strong> Capacité à concevoir un système électronique complet de A à Z, de la conception au prototype testé.</p>
+      </div>
+    </div>
+    <div class="fiche-footer">
+      <span class="author">Junior Sitti · BUT GEII S1</span>
+      <span class="linkedin-hint">linkedin.com/in/junior-sitti</span>
+    </div>
+  </div>
+
+  <!-- ══ SAÉ 1.02 ══ -->
+  <div class="fiche s1">
+    <div class="fiche-header">
+      <div class="semestre-badge">SAÉ 1.02 · Semestre 1</div>
+      <div class="fiche-title">Amplificateur Audio</div>
+      <div class="fiche-subtitle">Électronique analogique & analyse signal</div>
+    </div>
+    <div class="fiche-body">
+      <div>
+        <div class="section-label">Contexte</div>
+        <p class="description">Concevoir un amplificateur opérationnel à partir de composants passifs et actifs, analyser ses performances et valider les résultats par mesures expérimentales.</p>
+      </div>
+      <div>
+        <div class="section-label">Ce que j'ai réalisé</div>
+        <ul class="tasks">
+          <li>Schéma électronique sous Fritzing</li>
+          <li>Montage sur breadboard et câblage</li>
+          <li>Mesure du gain et analyse du bruit</li>
+          <li>Tests expérimentaux et documentation des résultats</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Compétences démontrées</div>
+        <div class="tags">
+          <span class="tag tech">Électronique analogique</span>
+          <span class="tag tech">Analyse signal</span>
+          <span class="tag tech">Dimensionnement</span>
+          <span class="tag tool">Fritzing</span>
+          <span class="tag soft">Précision</span>
+          <span class="tag soft">Méthode expérimentale</span>
+        </div>
+      </div>
+      <div class="impact-box">
+        <p>👉 <strong>Ce que ça prouve :</strong> Bases solides en électronique analogique et capacité à tester, mesurer et analyser rigoureusement un circuit.</p>
+      </div>
+    </div>
+    <div class="fiche-footer">
+      <span class="author">Junior Sitti · BUT GEII S1</span>
+      <span class="linkedin-hint">linkedin.com/in/junior-sitti</span>
+    </div>
+  </div>
+
+  <!-- ══ SAÉ 2.01 ══ -->
+  <div class="fiche s2">
+    <div class="fiche-header">
+      <div class="semestre-badge">SAÉ 2.01 · Semestre 2</div>
+      <div class="fiche-title">Robot Suiveur de Ligne</div>
+      <div class="fiche-subtitle">Robotique mobile · Intégration mécatronique</div>
+    </div>
+    <div class="fiche-body">
+      <div>
+        <div class="section-label">Contexte</div>
+        <p class="description">Concevoir et programmer un robot capable de détecter et suivre une ligne au sol, en intégrant mécanique, électronique et programmation.</p>
+      </div>
+      <div>
+        <div class="section-label">Ce que j'ai réalisé</div>
+        <ul class="tasks">
+          <li>Planification via diagramme de Gantt</li>
+          <li>Conception électronique des capteurs IR et gestion des moteurs</li>
+          <li>Programmation embarquée de l'algorithme de suivi</li>
+          <li>Modélisation 3D du châssis sous Fusion 360</li>
+          <li>Tests terrain et ajustements</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Compétences démontrées</div>
+        <div class="tags">
+          <span class="tag tech">Robotique mobile</span>
+          <span class="tag tech">Capteurs IR</span>
+          <span class="tag tech">Gestion moteurs</span>
+          <span class="tag tool">Fusion 360</span>
+          <span class="tag soft">Gestion de projet</span>
+          <span class="tag soft">Intégration système</span>
+        </div>
+      </div>
+      <div class="impact-box">
+        <p>👉 <strong>Ce que ça prouve :</strong> Capacité à mener un projet complet mécanique + électronique + code, avec planification et tests terrain.</p>
+      </div>
+    </div>
+    <div class="fiche-footer">
+      <span class="author">Junior Sitti · BUT GEII S2</span>
+      <span class="linkedin-hint">linkedin.com/in/junior-sitti</span>
+    </div>
+  </div>
+
+  <!-- ══ SAÉ 2.02 ══ -->
+  <div class="fiche s2">
+    <div class="fiche-header">
+      <div class="semestre-badge">SAÉ 2.02 · Semestre 2</div>
+      <div class="fiche-title">Cyclo Grid</div>
+      <div class="fiche-subtitle">Gestion intelligente de l'énergie · Automate industriel</div>
+    </div>
+    <div class="fiche-body">
+      <div>
+        <div class="section-label">Contexte</div>
+        <p class="description">Créer un système énergétique intelligent piloté par automate industriel (PLC), capable de simuler et gérer des flux d'énergie dans différents scénarios.</p>
+      </div>
+      <div>
+        <div class="section-label">Ce que j'ai réalisé</div>
+        <ul class="tasks">
+          <li>Programmation automate en langage Ladder (PLC)</li>
+          <li>Conception des schémas électriques du système</li>
+          <li>Simulation de scénarios énergétiques variés</li>
+          <li>Analyse des flux et optimisation</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Compétences démontrées</div>
+        <div class="tags">
+          <span class="tag tech">Automatisme industriel</span>
+          <span class="tag tech">Gestion énergétique</span>
+          <span class="tag tool">PLC · Ladder</span>
+          <span class="tag soft">Analyse systémique</span>
+          <span class="tag soft">Rigueur</span>
+        </div>
+      </div>
+      <div class="impact-box">
+        <p>👉 <strong>Ce que ça prouve :</strong> Compétence industrielle directement applicable en entreprise, avec une bonne compréhension des systèmes énergétiques pilotés.</p>
+      </div>
+    </div>
+    <div class="fiche-footer">
+      <span class="author">Junior Sitti · BUT GEII S2</span>
+      <span class="linkedin-hint">linkedin.com/in/junior-sitti</span>
+    </div>
+  </div>
+
+  <!-- ══ SAÉ 2.03 ══ -->
+  <div class="fiche s2">
+    <div class="fiche-header">
+      <div class="semestre-badge">SAÉ 2.03 · Semestre 2</div>
+      <div class="fiche-title">Automatisation Ascenseur / Parking</div>
+      <div class="fiche-subtitle">Logique séquentielle · Sécurité industrielle</div>
+    </div>
+    <div class="fiche-body">
+      <div>
+        <div class="section-label">Contexte</div>
+        <p class="description">Automatiser intégralement un système complexe (ascenseur ou parking) avec gestion des sécurités, supervision et intégration capteurs/actionneurs.</p>
+      </div>
+      <div>
+        <div class="section-label">Ce que j'ai réalisé</div>
+        <ul class="tasks">
+          <li>Programmation Ladder et Grafcet du séquencement</li>
+          <li>Intégration et câblage capteurs / actionneurs</li>
+          <li>Tests et validation des conditions de sécurité</li>
+          <li>Supervision via afficheurs</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Compétences démontrées</div>
+        <div class="tags">
+          <span class="tag tech">Logique séquentielle</span>
+          <span class="tag tech">Sécurité industrielle</span>
+          <span class="tag tech">Architecture système</span>
+          <span class="tag tool">Ladder · Grafcet</span>
+          <span class="tag soft">Vision système</span>
+          <span class="tag soft">Méthodologie</span>
+        </div>
+      </div>
+      <div class="impact-box">
+        <p>👉 <strong>Ce que ça prouve :</strong> Programmation industrielle avancée avec vision système complète et prise en compte des contraintes de sécurité.</p>
+      </div>
+    </div>
+    <div class="fiche-footer">
+      <span class="author">Junior Sitti · BUT GEII S2</span>
+      <span class="linkedin-hint">linkedin.com/in/junior-sitti</span>
+    </div>
+  </div>
+
+  <!-- ══ SAÉ 3 ESCAPEBOT ══ -->
+  <div class="fiche s3">
+    <div class="fiche-header">
+      <div class="semestre-badge">SAÉ 3 · Semestre 3 · Concours GEII</div>
+      <div class="fiche-title">ESCAPEBOT — Robot Autonome</div>
+      <div class="fiche-subtitle">Systèmes embarqués · Architecture · Documentation</div>
+    </div>
+    <div class="fiche-body">
+      <div>
+        <div class="section-label">Contexte</div>
+        <p class="description">Développer un robot terrestre autonome pour concours GEII, avec documentation technique complète en anglais et modélisation système formelle.</p>
+      </div>
+      <div>
+        <div class="section-label">Ce que j'ai réalisé</div>
+        <ul class="tasks">
+          <li>Implémentation systèmes embarqués et navigation autonome</li>
+          <li>Modélisation SysML (BDD, IBD) du système</li>
+          <li>Calibration et validation des capteurs</li>
+          <li>Réalisation du prototype fonctionnel pour concours</li>
+          <li>Rédaction de la notice technique en anglais</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Compétences démontrées</div>
+        <div class="tags">
+          <span class="tag tech">Architecture système</span>
+          <span class="tag tech">Systèmes embarqués</span>
+          <span class="tag tech">Validation & tests</span>
+          <span class="tag tool">SysML · BDD · IBD</span>
+          <span class="tag soft">Anglais technique</span>
+          <span class="tag soft">Travail sous pression</span>
+        </div>
+      </div>
+      <div class="impact-box">
+        <p>👉 <strong>Ce que ça prouve :</strong> Niveau ingénieur — conception, modélisation formelle et documentation technique sérieuse dans un contexte de compétition.</p>
+      </div>
+    </div>
+    <div class="fiche-footer">
+      <span class="author">Junior Sitti · BUT GEII S3</span>
+      <span class="linkedin-hint">linkedin.com/in/junior-sitti</span>
+    </div>
+  </div>
+
+  <!-- ══ SAÉ 4 ══ -->
+  <div class="fiche s4">
+    <div class="fiche-header">
+      <div class="semestre-badge">SAÉ 4 · Semestre 4</div>
+      <div class="fiche-title">Supervision sans fil d'un Robot</div>
+      <div class="fiche-subtitle">Communication série · IHM · Supervision industrielle</div>
+    </div>
+    <div class="fiche-body">
+      <div>
+        <div class="section-label">Contexte</div>
+        <p class="description">Superviser et contrôler un robot à distance en temps réel via communication sans fil, avec interface homme-machine joystick et visualisation des capteurs.</p>
+      </div>
+      <div>
+        <div class="section-label">Ce que j'ai réalisé</div>
+        <ul class="tasks">
+          <li>Mise en place de la communication RS232 bidirectionnelle</li>
+          <li>Développement de l'IHM : joystick + écran LCD</li>
+          <li>Visualisation des données capteurs à distance</li>
+          <li>Tests de stabilité et de latence de transmission</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Compétences démontrées</div>
+        <div class="tags">
+          <span class="tag tech">Communication série RS232</span>
+          <span class="tag tech">IHM embarquée</span>
+          <span class="tag tech">Supervision industrielle</span>
+          <span class="tag tool">LCD · Joystick</span>
+          <span class="tag soft">Sens du détail</span>
+          <span class="tag soft">Tests systématiques</span>
+        </div>
+      </div>
+      <div class="impact-box">
+        <p>👉 <strong>Ce que ça prouve :</strong> Maîtrise complète de la communication embarquée et des interfaces homme-machine dans un contexte de supervision en temps réel.</p>
+      </div>
+    </div>
+    <div class="fiche-footer">
+      <span class="author">Junior Sitti · BUT GEII S4</span>
+      <span class="linkedin-hint">linkedin.com/in/junior-sitti</span>
+    </div>
+  </div>
+
+  <!-- ══ SAÉ 5.02 IoT ══ -->
+  <div class="fiche s5">
+    <div class="fiche-header">
+      <div class="semestre-badge">SAÉ 5.02 · Semestre 5</div>
+      <div class="fiche-title">IoT NodeMCU — API Cloud</div>
+      <div class="fiche-subtitle">Internet des Objets · Connectivité · API REST</div>
+    </div>
+    <div class="fiche-body">
+      <div>
+        <div class="section-label">Contexte</div>
+        <p class="description">Connecter un microcontrôleur NodeMCU/ESP à Internet et envoyer des données en temps réel vers une API cloud, dans un contexte IoT industriel.</p>
+      </div>
+      <div>
+        <div class="section-label">Ce que j'ai réalisé</div>
+        <ul class="tasks">
+          <li>Programmation NodeMCU / ESP avec connexion Wi-Fi</li>
+          <li>Envoi de données vers une API REST via HTTP</li>
+          <li>Tests de connectivité et validation cloud</li>
+          <li>Analyse des trames et débogage réseau</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Compétences démontrées</div>
+        <div class="tags">
+          <span class="tag tech">IoT</span>
+          <span class="tag tech">API REST · HTTP</span>
+          <span class="tag tech">Réseau embarqué</span>
+          <span class="tag tool">NodeMCU · ESP</span>
+          <span class="tag soft">Curiosité technique</span>
+          <span class="tag soft">Autonomie</span>
+        </div>
+      </div>
+      <div class="impact-box">
+        <p>👉 <strong>Ce que ça prouve :</strong> Compétence IoT directement recherchée en alternance — connexion d'objets à des services cloud en conditions réelles.</p>
+      </div>
+    </div>
+    <div class="fiche-footer">
+      <span class="author">Junior Sitti · BUT GEII S5</span>
+      <span class="linkedin-hint">linkedin.com/in/junior-sitti</span>
+    </div>
+  </div>
+
+  <!-- ══ SAÉ 6 IA embarquée ══ -->
+  <div class="fiche s6">
+    <div class="fiche-header">
+      <div class="semestre-badge">SAÉ 6 · Semestre 6</div>
+      <div class="fiche-title">IA dans les Systèmes Embarqués</div>
+      <div class="fiche-subtitle">Intelligence artificielle embarquée · Edge AI</div>
+    </div>
+    <div class="fiche-body">
+      <div>
+        <div class="section-label">Contexte</div>
+        <p class="description">Intégrer de l'intelligence artificielle directement dans un système embarqué contraint, avec optimisation pour le traitement local (Edge AI).</p>
+      </div>
+      <div>
+        <div class="section-label">Ce que j'ai réalisé</div>
+        <ul class="tasks">
+          <li>Optimisation d'un modèle IA pour système embarqué contraint</li>
+          <li>Traitement et inférence locale (sans cloud)</li>
+          <li>Intégration logicielle dans l'architecture embarquée</li>
+          <li>Tests de performance et validation</li>
+        </ul>
+      </div>
+      <div>
+        <div class="section-label">Compétences démontrées</div>
+        <div class="tags">
+          <span class="tag tech">IA embarquée · Edge AI</span>
+          <span class="tag tech">Optimisation modèle</span>
+          <span class="tag tech">Traitement local</span>
+          <span class="tag soft">Vision avancée</span>
+          <span class="tag soft">Innovation</span>
+        </div>
+      </div>
+      <div class="impact-box">
+        <p>👉 <strong>Ce que ça prouve :</strong> Niveau avancé — compétence rare et très recherchée en 2026 pour des postes embarqués / IA dans tous les secteurs tech.</p>
+      </div>
+    </div>
+    <div class="fiche-footer">
+      <span class="author">Junior Sitti · BUT GEII S6</span>
+      <span class="linkedin-hint">linkedin.com/in/junior-sitti</span>
+    </div>
+  </div>
+
+</div>
+
+
+</body>
+</html>
+
